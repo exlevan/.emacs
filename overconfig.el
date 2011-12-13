@@ -12,7 +12,7 @@
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 ;; Set font
-(set-default-font "Monaco-8")
+(set-default-font "Monospace-10")
 
 ;; Set default browser to chromium
 (setq browse-url-browser-function 'browse-url-generic
@@ -40,68 +40,68 @@
 ;;   '(jabber-use-global-history nil)
 ;;   '(jabber-vcard-avatars-retrieve nil)))
 ;;(provide 'custom-jabber-settings)
-(require 'jabber)
-(require 'custom-jabber-settings)
-(custom-jabber-settings)
+;;(require 'jabber)
+;;(require 'custom-jabber-settings)
+;;(custom-jabber-settings)
 
-;; Notifying of new jabber.el messages.
-(defvar jabber-activity-jids-count 0)
+;; ;; Notifying of new jabber.el messages.
+;; (defvar jabber-activity-jids-count 0)
 
-(defun jabber-message-blink ()
-  (let ((count (length jabber-activity-jids)))
-    (unless (= jabber-activity-jids-count count)
-      (start-process-shell-command "blink" nil 
-                                   "blink" (format "--numlockled --rate %s" count))
-      (setq jabber-activity-jids-count count))))
+;; (defun jabber-message-blink ()
+;;   (let ((count (length jabber-activity-jids)))
+;;     (unless (= jabber-activity-jids-count count)
+;;       (start-process-shell-command "blink" nil 
+;;                                    "blink" (format "--numlockled --rate %s" count))
+;;       (setq jabber-activity-jids-count count))))
 
-(add-hook 'jabber-activity-update-hook 'jabber-message-blink)
+;; (add-hook 'jabber-activity-update-hook 'jabber-message-blink)
 
-;; don't forget to disable blinking after disconnection
-(add-hook 'jabber-post-disconnect-hook 
-     (lambda () 
-       (jabber-autoaway-stop)
-            (jabber-keepalive-stop)
-       (start-process-shell-command "blink" nil "blink")))
+;; ;; don't forget to disable blinking after disconnection
+;; (add-hook 'jabber-post-disconnect-hook 
+;;      (lambda () 
+;;        (jabber-autoaway-stop)
+;;             (jabber-keepalive-stop)
+;;        (start-process-shell-command "blink" nil "blink")))
 
-;; Notifying through libnotify
-(defvar libnotify-program "/usr/bin/notify-send")
+;; ;; Notifying through libnotify
+;; (defvar libnotify-program "/usr/bin/notify-send")
 
-(defun notify-send (title message)
-  (start-process "notify" " notify"
-		 libnotify-program "--expire-time=3000" title message))
+;; (defun notify-send (title message)
+;;   (start-process "notify" " notify"
+;; 		 libnotify-program "--expire-time=3000" title message))
 
-(defun libnotify-jabber-notify (from buf text proposed-alert)
-  "(jabber.el hook) Notify of new Jabber chat messages via libnotify"
-  (when (or jabber-message-alert-same-buffer
-            (not (memq (selected-window) (get-buffer-window-list buf))))
-    (if (jabber-muc-sender-p from)
-        (notify-send (format "(PM) %s"
-                       (jabber-jid-displayname (jabber-jid-user from)))
-               (format "%s: %s" (jabber-jid-resource from) text)))
-      (notify-send (format "%s" (jabber-jid-displayname from))
-             text)))
+;; (defun libnotify-jabber-notify (from buf text proposed-alert)
+;;   "(jabber.el hook) Notify of new Jabber chat messages via libnotify"
+;;   (when (or jabber-message-alert-same-buffer
+;;             (not (memq (selected-window) (get-buffer-window-list buf))))
+;;     (if (jabber-muc-sender-p from)
+;;         (notify-send (format "(PM) %s"
+;;                        (jabber-jid-displayname (jabber-jid-user from)))
+;;                (format "%s: %s" (jabber-jid-resource from) text)))
+;;       (notify-send (format "%s" (jabber-jid-displayname from))
+;;              text)))
 
-(add-hook 'jabber-alert-message-hooks 'libnotify-jabber-notify)
+;; (add-hook 'jabber-alert-message-hooks 'libnotify-jabber-notify)
 
-;; Send message on C-RET
-(define-key jabber-chat-mode-map (kbd "RET") 'newline)
-(define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
+;; ;; Send message on C-RET
+;; (define-key jabber-chat-mode-map (kbd "RET") 'newline)
+;; (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
 
-;; Open chats in their own frames (does not work)
-(setq 
-  special-display-regexps 
-  '(("jabber-chat" 
-     (width . 80)
-     (scroll-bar-width . 16)
-     (height . 15)
-     (tool-bar-lines . 0)
-     (menu-bar-lines 0)
-     ;;(font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
-     (left . 80))))
+;; ;; Open chats in their own frames (does not work)
+;; (setq 
+;;   special-display-regexps 
+;;   '(("jabber-chat" 
+;;      (width . 80)
+;;      (scroll-bar-width . 16)
+;;      (height . 15)
+;;      (tool-bar-lines . 0)
+;;      (menu-bar-lines 0)
+;;      ;;(font . "-GURSoutline-Courier New-normal-r-normal-normal-11-82-96-96-c-70-iso8859-1")
+;;      (left . 80))))
 
-;; Custom view
-(require 'custom-look)
-(custom-look)
+;; ;; Custom view
+;; (require 'custom-look)
+;; (custom-look)
 
 ;; Setting initial frame size
 (defun set-frame-size-according-to-resolution ()
@@ -181,9 +181,9 @@
 (global-hl-line-mode 1)
 
 ;; Nyan mode
-(add-to-list 'load-path (concat dotfiles-dir "/nyan-mode"))
-(require 'nyan-mode)
-(nyan-mode 1)
+;;(add-to-list 'load-path (concat dotfiles-dir "/nyan-mode"))
+;;(require 'nyan-mode)
+;;(nyan-mode 1)
 
 ;; Colourfull brackets
 (require 'rainbow-delimiters)
@@ -199,3 +199,12 @@
 (require 'roy-mode)
 
 (eval-after-load "color-theme" '(color-theme-blackboard))
+
+(add-to-list 'load-path "~/.emacs.d/evil")
+(require 'evil)  
+(evil-mode 1)
+
+(add-to-list 'load-path "~/.emacs.d/emacs-nav")
+(require 'nav)
+
+ (require 'protobuf-mode)
